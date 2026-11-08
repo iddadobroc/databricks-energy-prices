@@ -1,6 +1,6 @@
 # Databricks energy prices
 
-Automatic weekly download of fuel and electricity prices for the group project of the course
+Automatic daily download of fuel and electricity prices for the group project of the course
 *Analyzing Big Data* (NOVA IMS, 2026/2027): a Data Lakehouse on Databricks about new passenger cars registered
 in Germany, Spain, France, Italy and Portugal.
 
@@ -9,12 +9,13 @@ in Germany, Spain, France, Italy and Portugal.
 Databricks Free Edition can only reach a short list of internet domains, and the two sources below are not on it.
 GitHub is, so this repository works as a bridge:
 
-1. Every Thursday a GitHub Action runs `fetch_prices.py`, downloads the latest files from the sources and commits
-   them in `data/` together with `data/manifest.json` (download date, size and checksum of each file).
-2. Every Friday a Databricks job reads `manifest.json` from this repository, copies the new download to the Volume
-   `automotive_analytics.raw.energy_prices_files/<download_date>/` and appends it to the Bronze tables.
+1. Every day at 05:00 UTC a GitHub Action runs `fetch_prices.py`, downloads the files from the sources and commits
+   the ones that changed in `data/`, together with `data/manifest.json` (download date, size and checksum of each
+   changed file). Ember changes every day, the Oil Bulletin once a week; if nothing changed, nothing is committed.
+2. Every day at 08:00 (Lisbon) a Databricks job reads `manifest.json` from this repository, copies the changed files
+   to the Volume `automotive_analytics.raw.energy_prices_files/<download_date>/` and appends them to the Bronze tables.
 
-Each weekly download is a new read of the sources, so the Bronze layer keeps the full read history.
+Each download is a new read of the sources, so the Bronze layer keeps the full read history.
 
 ## Sources
 
@@ -29,10 +30,10 @@ BeautifulSoup. The Ember file has a fixed URL.
 ## Repository structure
 
 ```
-├── fetch_prices.py                       # downloads the files and writes the manifest
+├── fetch_prices.py                       # downloads the files and writes the manifest of the changed ones
 ├── requirements.txt                      # requests, beautifulsoup4
-├── .github/workflows/fetch_prices.yml    # weekly schedule (Thursday 18:00 UTC) + manual run
-└── data/                                 # latest download, replaced every week (git history keeps the old ones)
+├── .github/workflows/fetch_prices.yml    # daily schedule (05:00 UTC) + manual run
+└── data/                                 # latest version of each file (git history keeps the old ones)
     ├── Weekly_Oil_Bulletin_Prices_History_maticni_4web.xlsx
     ├── european_wholesale_electricity_price_data_daily.csv
     └── manifest.json

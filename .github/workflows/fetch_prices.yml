@@ -2,7 +2,7 @@ name: Fetch energy prices
 
 on:
   schedule:
-    - cron: "0 18 * * 4"   # every Thursday at 18:00 UTC (the Oil Bulletin is published on Thursdays)
+    - cron: "0 5 * * *"    # every day at 05:00 UTC (Ember changes daily, the Oil Bulletin weekly)
   workflow_dispatch:        # manual run from the Actions tab
 
 permissions:

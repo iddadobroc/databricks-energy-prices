@@ -5,7 +5,8 @@ Sources:
 - Ember: daily European wholesale electricity prices, history since 2015
 
 The files are saved in data/ with the names used by the source, together with a manifest.json
-that Databricks reads to know when the data was downloaded.
+that Databricks reads to know when the data was downloaded. The manifest lists only the files that
+changed since the previous download (the Oil Bulletin changes once a week, Ember every day).
 """
 import hashlib
 import json
@@ -38,17 +39,25 @@ def find_oil_bulletin_link():
 
 
 def download(url, filename):
+    """Download a file and return its manifest entry, or None if it is the same as the previous download."""
     response = session.get(url, timeout=300)
     response.raise_for_status()
-    (DATA_DIR / filename).write_bytes(response.content)
-    return {"file": filename, "url": url, "size_bytes": len(response.content),
-            "sha256": hashlib.sha256(response.content).hexdigest()}
+    path = DATA_DIR / filename
+    sha256 = hashlib.sha256(response.content).hexdigest()
+    if path.exists() and hashlib.sha256(path.read_bytes()).hexdigest() == sha256:
+        print(f"{filename}: no changes")
+        return None
+    path.write_bytes(response.content)
+    return {"file": filename, "url": url, "size_bytes": len(response.content), "sha256": sha256}
 
 
 def main():
     DATA_DIR.mkdir(exist_ok=True)
-    files = [download(find_oil_bulletin_link(), OIL_BULLETIN_FILE),
-             download(EMBER_URL, EMBER_FILE)]
+    files = [f for f in (download(find_oil_bulletin_link(), OIL_BULLETIN_FILE),
+                         download(EMBER_URL, EMBER_FILE)) if f]
+    if not files:
+        print("No new data: nothing to commit")
+        return
     manifest = {"download_date": date.today().isoformat(), "files": files}
     (DATA_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps(manifest, indent=2))
