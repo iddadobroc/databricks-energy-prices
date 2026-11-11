@@ -12,7 +12,7 @@ GitHub is, so this repository works as a bridge:
 1. Every day at 05:00 UTC a GitHub Action runs `fetch_prices.py`, downloads the files from the sources and commits
    the ones that changed in `data/`, together with `data/manifest.json` (download date, size and checksum of each
    changed file). Ember changes every day, the Oil Bulletin once a week; if nothing changed, nothing is committed.
-2. Every day at 08:00 (Lisbon) a Databricks job reads `manifest.json` from this repository, copies the changed files
+2. Every day at 16:00 (Lisbon) a Databricks job reads `manifest.json` from this repository, copies the changed files
    to the Volume `automotive_analytics.raw.energy_prices_files/<download_date>/` and appends them to the Bronze tables.
 
 Each download is a new read of the sources, so the Bronze layer keeps the full read history.
