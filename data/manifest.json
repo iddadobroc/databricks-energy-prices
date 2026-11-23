@@ -1,11 +1,11 @@
 {
-  "download_date": "2026-11-22",
+  "download_date": "2026-11-23",
   "files": [
     {
       "file": "european_wholesale_electricity_price_data_daily.csv",
       "url": "https://files.ember-energy.org/public-downloads/price/outputs/european_wholesale_electricity_price_data_daily.csv",
-      "size_bytes": 3690821,
-      "sha256": "b8253ebd9c995357cb207be1a87fadde5edfea310995f75134fb817eae752847"
+      "size_bytes": 3691934,
+      "sha256": "2f495d8112e03858685ef1f7d816e4e4635379a25d18df8b976655233111e136"
     }
   ]
 }
