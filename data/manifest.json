@@ -1,11 +1,17 @@
 {
-  "download_date": "2026-11-24",
+  "download_date": "2026-11-25",
   "files": [
+    {
+      "file": "Weekly_Oil_Bulletin_Prices_History_maticni_4web.xlsx",
+      "url": "https://energy.ec.europa.eu/document/download/906e60ca-8b6a-44e7-8589-652854d2fd3f_en?filename=Weekly_Oil_Bulletin_Prices_History_maticni_4web.xlsx",
+      "size_bytes": 4514332,
+      "sha256": "ac6dc122091a293f074c57b02417e6a7e836c3ffd48449b2a97de76a834392ac"
+    },
     {
       "file": "european_wholesale_electricity_price_data_daily.csv",
       "url": "https://files.ember-energy.org/public-downloads/price/outputs/european_wholesale_electricity_price_data_daily.csv",
-      "size_bytes": 3692887,
-      "sha256": "d76af8ef62fcc8bf4554d45938e1152e20ebb33c72e327faa83cb5e505c4f5ac"
+      "size_bytes": 3693958,
+      "sha256": "8f162e53bce4048ad6e1bc5b2955df599df34d3ce7e8a6782f942b88a71a5ace"
     }
   ]
 }
